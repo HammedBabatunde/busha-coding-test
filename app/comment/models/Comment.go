@@ -28,6 +28,6 @@ func (c *Comment) InitFields() {
 	}
 }
 
-func (c *Comment) Validate() error {
+func (c *Comment) Validate() *[]string {
 	return validator.Validator.Validate(c)
 }
