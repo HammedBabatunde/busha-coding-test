@@ -10,3 +10,10 @@ var GormDB *gorm.DB
 func ConnectToDB() {
 	GormDB = dbGorm.ConnectToProgres()
 }
+
+func Migrate(payload ...interface{}) error {
+	if GormDB == nil {
+		ConnectToDB()
+	}
+	return dbGorm.PostgresMigrate(GormDB, payload...)
+}

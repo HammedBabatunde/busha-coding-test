@@ -39,3 +39,7 @@ func ConnectToProgres() *gorm.DB {
 	}
 	return db
 }
+
+func PostgresMigrate(db *gorm.DB, payload ...interface{}) error {
+	return db.AutoMigrate(payload...)
+}
