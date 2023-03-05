@@ -29,11 +29,11 @@ func main() {
 	server.Use(cors.Default())
 
 	server.GET("/ping", func(ctx *gin.Context) {
-		server_response.Respond(ctx, http.StatusOK, "server is up and running", true, nil)
+		server_response.Respond(ctx, http.StatusOK, "server is up and running", true, nil, nil)
 	})
 
 	server.NoRoute(func(ctx *gin.Context) {
-		server_response.Respond(ctx, http.StatusNotFound, "this route does not exist", false, nil)
+		server_response.Respond(ctx, http.StatusNotFound, "this route does not exist", false, nil, nil)
 	})
 
 	gin_mode := os.Getenv("GIN_MODE")
