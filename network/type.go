@@ -1,7 +1,7 @@
 package network
 
 type NetworkResponse struct {
-	Body       interface{}
+	Body       *[]byte
 	StatusCode int
 	Error      error
 }

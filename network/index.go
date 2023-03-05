@@ -54,9 +54,8 @@ func (network *NetworkController) Get(path string, headers *map[string]string, p
 			Error:      err,
 		}
 	}
-	res_json := string(res_body)
 	return &NetworkResponse{
-		Body:       res_json,
+		Body:       &res_body,
 		StatusCode: res.StatusCode,
 		Error:      nil,
 	}
@@ -106,9 +105,8 @@ func (network *NetworkController) Post(path string, headers *map[string]string, 
 			Error:      err,
 		}
 	}
-	res_json := string(res_body)
 	return &NetworkResponse{
-		Body:       res_json,
+		Body:       &res_body,
 		StatusCode: res.StatusCode,
 		Error:      nil,
 	}
