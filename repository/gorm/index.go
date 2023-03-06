@@ -31,7 +31,7 @@ func (gr *GormRepository[T]) CreateOne(payload *T) (*T, error) {
 // Parameter filter can be of type string or struct pointer
 func (gr *GormRepository[T]) FindMany(filter interface{}) (*[]T, error) {
 	payload := []T{}
-	result := gr.Gorm.Where(filter).Find(payload)
+	result := gr.Gorm.Where(filter).Find(&payload)
 	if err := gr.errFilter(result.Error, gorm.ErrRecordNotFound); err != nil {
 		logger.Error(errors.New("db error - find many search failed"), zap.Error(result.Error))
 		return nil, err
