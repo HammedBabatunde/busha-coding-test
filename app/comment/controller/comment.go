@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/emekarr/coding-test-busha/app/comment"
@@ -14,8 +15,8 @@ import (
 )
 
 func CreateComment(ctx *gin.Context) {
-	term := ctx.Query("term")
-	if term == "" {
+	id := ctx.Query("id")
+	if id == "" {
 		server_response.Respond(ctx, http.StatusBadRequest, "pass in a search term", false, nil, nil)
 		return
 	}
@@ -28,13 +29,17 @@ func CreateComment(ctx *gin.Context) {
 		server_response.Respond(ctx, http.StatusBadRequest, "passing in the correct comment payload", false, nil, errs)
 		return
 	}
-	movie, err := movie.MovieService.SearchMovies(term)
+	moviePayload, err := movie.MovieService.SearchMovies(id)
 	if err != nil {
-		app_errors.ErrorHandler(ctx, app_errors.RequestError{Err: errors.New("pass in a json object"), StatusCode: http.StatusInternalServerError})
+		app_errors.ErrorHandler(ctx, app_errors.RequestError{Err: errors.New("an error occured while fetching movies"), StatusCode: http.StatusInternalServerError})
+		return
+	}
+	if (moviePayload == nil || *moviePayload == movie.Movie{}) {
+		app_errors.ErrorHandler(ctx, app_errors.RequestError{Err: fmt.Errorf("movie with id=%s does not exist", id), StatusCode: http.StatusInternalServerError})
 		return
 	}
 	result, errs := commentUseCases.CreateCommentUseCase(ctx, models.Comment{
-		Name:    movie.Title,
+		Name:    moviePayload.Title,
 		Comment: commentPayload.Comment,
 	})
 	if errs != nil {

@@ -28,12 +28,12 @@ func (ms *movieService) FetchMovies() (*[]Movie, error) {
 }
 
 func (ms *movieService) SearchMovies(term string) (*Movie, error) {
-	response := ms.network.Get(fmt.Sprintf("/?search%s", term), nil, nil)
+	response := ms.network.Get(fmt.Sprintf("/%s", term), nil, nil)
 	if response.Error != nil {
 		logger.Error(errors.New("error searching movies from movie service"), zap.Error(response.Error))
 		return nil, response.Error
 	}
-	var parsedResponse MovieResponse
+	var parsedResponse Movie
 	json.Unmarshal(*response.Body, &parsedResponse)
-	return &parsedResponse.Results[0], nil
+	return &parsedResponse, nil
 }
