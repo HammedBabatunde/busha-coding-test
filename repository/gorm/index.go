@@ -3,6 +3,7 @@ package gorm
 import (
 	"errors"
 
+	"github.com/emekarr/coding-test-busha/app/comment/models"
 	"github.com/emekarr/coding-test-busha/logger"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -41,7 +42,7 @@ func (gr *GormRepository[T]) FindMany(filter interface{}) (*[]T, error) {
 
 func (gr *GormRepository[T]) CountDocs(filter interface{}) (*int64, error) {
 	var count int64
-	result := gr.Gorm.Where(filter).Count(&count)
+	result := gr.Gorm.Model(&models.Comment{}).Where(filter).Count(&count)
 	if err := gr.errFilter(result.Error, gorm.ErrRecordNotFound); err != nil {
 		logger.Error(errors.New("db error - find many search failed"), zap.Error(result.Error))
 		return nil, err
