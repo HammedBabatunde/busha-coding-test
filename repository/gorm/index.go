@@ -38,3 +38,13 @@ func (gr *GormRepository[T]) FindMany(filter interface{}) (*[]T, error) {
 	}
 	return &payload, nil
 }
+
+func (gr *GormRepository[T]) CountDocs(filter interface{}) (*int64, error) {
+	var count int64
+	result := gr.Gorm.Where(filter).Count(&count)
+	if err := gr.errFilter(result.Error, gorm.ErrRecordNotFound); err != nil {
+		logger.Error(errors.New("db error - find many search failed"), zap.Error(result.Error))
+		return nil, err
+	}
+	return &count, nil
+}
