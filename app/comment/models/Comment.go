@@ -9,19 +9,19 @@ import (
 
 type Comment struct {
 	ID        string    `gorm:"primarykey" validate:"required,uuid" json:"id" `
-	CreatedAt time.Time `validate:"required," json:"createdAt"`
+	CreatedAt time.Time `validate:"required" json:"createdAt"`
 	UpdatedAt time.Time `validate:"required" json:"updatedAt"`
 
-	Name        string `gorm:"index" validate:"required,alpha" json:"name"`
-	Comment     string `validate:"required,alpha,lt=501" json:"comment"`
+	Name        string `gorm:"index" validate:"required,ascii" json:"name"`
+	Comment     string `validate:"required,lt=501" json:"comment"`
 	CommenterIP string `validate:"required,ip" json:"commenterIP"`
 }
 
 func (c *Comment) InitFields() {
-	if c.ID != "" {
+	if c.ID == "" {
 		c.ID = utils.GenerateID()
 	}
-	if c.CreatedAt.Unix() == 0 {
+	if c.CreatedAt.IsZero() {
 		currentTime := time.Now().UTC()
 		c.CreatedAt = currentTime
 		c.UpdatedAt = currentTime

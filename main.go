@@ -9,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/emekarr/coding-test-busha/logger"
+	"github.com/emekarr/coding-test-busha/routes"
 	"github.com/emekarr/coding-test-busha/server_response"
 )
 
@@ -27,6 +28,11 @@ func main() {
 	server := gin.Default()
 
 	server.Use(cors.Default())
+
+	baseRouter := server.Group("/api")
+	{
+		routes.InitRouter(baseRouter)
+	}
 
 	server.GET("/ping", func(ctx *gin.Context) {
 		server_response.Respond(ctx, http.StatusOK, "server is up and running", true, nil, nil)
