@@ -7,6 +7,7 @@ import (
 
 	"github.com/emekarr/coding-test-busha/app/comment"
 	"github.com/emekarr/coding-test-busha/app/comment/models"
+	comentRepo "github.com/emekarr/coding-test-busha/app/comment/repository"
 	commentUseCases "github.com/emekarr/coding-test-busha/app/comment/usecases/comment"
 	"github.com/emekarr/coding-test-busha/app/movie"
 	"github.com/emekarr/coding-test-busha/app_errors"
@@ -47,4 +48,21 @@ func CreateComment(ctx *gin.Context) {
 		return
 	}
 	server_response.Respond(ctx, http.StatusCreated, "comment saved", true, result, nil)
+}
+
+func FetchComments(ctx *gin.Context) {
+	var movieName struct {
+		Name string `json:"name"`
+	}
+	if err := ctx.ShouldBindJSON(&movieName); err != nil {
+		server_response.Respond(ctx, http.StatusBadRequest, "pass in a valid json object that matches the payload", false, nil, nil)
+		return
+	}
+	commentRepository := comentRepo.GetCommentRepository()
+	comments, err := commentRepository.RunRawSQLFind("SELECT * FROM comments WHERE comments.name LIKE ? ORDER BY comments.created_at DESC;", movieName.Name+"%")
+	if err != nil {
+		app_errors.ErrorHandler(ctx, app_errors.RequestError{Err: err, StatusCode: http.StatusInternalServerError})
+		return
+	}
+	server_response.Respond(ctx, http.StatusOK, "comments fetched", true, comments, nil)
 }

@@ -9,3 +9,4 @@ type CommentPayload struct {
 func (cp *CommentPayload) Validate() *[]string {
 	return validator.Validator.Validate(cp)
 }
+
