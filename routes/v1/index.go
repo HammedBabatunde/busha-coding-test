@@ -7,5 +7,6 @@ func InitRoutesV1(rg *gin.RouterGroup) {
 	{
 		InitRoutesV1Comment(rgV1)
 		InitRoutesV1Movies(rgV1)
+		InitRoutesV1Characters(rgV1)
 	}
 }
