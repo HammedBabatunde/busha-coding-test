@@ -49,3 +49,13 @@ func (gr *GormRepository[T]) CountDocs(filter interface{}) (*int64, error) {
 	}
 	return &count, nil
 }
+
+func (gr *GormRepository[T]) RunRawSQLFind(query string, opts ...string) (interface{}, error) {
+	var payload []T
+	result := gr.Gorm.Raw(query, opts).Scan(&payload)
+	if err := gr.errFilter(result.Error, gorm.ErrRecordNotFound); err != nil {
+		logger.Error(errors.New("db error - find many search failed"), zap.Error(result.Error))
+		return nil, err
+	}
+	return payload, nil
+}
