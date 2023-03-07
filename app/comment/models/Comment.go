@@ -12,7 +12,7 @@ type Comment struct {
 	CreatedAt time.Time `validate:"required" json:"createdAt"`
 	UpdatedAt time.Time `validate:"required" json:"updatedAt"`
 
-	Name        string `gorm:"index" validate:"required,ascii" json:"name"`
+	Name        string `gorm:"index" validate:"required,ascii" json:"name,omitempty"`
 	Comment     string `validate:"required,lt=501" json:"comment"`
 	CommenterIP string `validate:"required,ip" json:"commenterIP"`
 }

@@ -59,7 +59,7 @@ func FetchComments(ctx *gin.Context) {
 		return
 	}
 	commentRepository := comentRepo.GetCommentRepository()
-	comments, err := commentRepository.RunRawSQLFind("SELECT * FROM comments WHERE comments.name LIKE ? ORDER BY comments.created_at DESC;", movieName.Name+"%")
+	comments, err := commentRepository.RunRawSQLFind("SELECT created_at, updated_at, id, comment, commenter_ip FROM comments WHERE comments.name LIKE ? ORDER BY comments.created_at DESC;", movieName.Name+"%")
 	if err != nil {
 		app_errors.ErrorHandler(ctx, app_errors.RequestError{Err: err, StatusCode: http.StatusInternalServerError})
 		return
