@@ -4,6 +4,7 @@ import (
 	db "github.com/emekarr/coding-test-busha/db"
 	"github.com/emekarr/coding-test-busha/logger"
 	"github.com/emekarr/coding-test-busha/migrations"
+	redisRepo "github.com/emekarr/coding-test-busha/repository/redis"
 )
 
 func StartServices() {
@@ -11,6 +12,8 @@ func StartServices() {
 	logger.InitializeLogger()
 	// connect to database
 	db.ConnectToDB()
+	// set up redis repo
+	redisRepo.SetUpRedisRepo()
 	// run migrations
 	migrations.RunMigrations()
 }
