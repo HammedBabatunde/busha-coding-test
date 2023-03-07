@@ -115,6 +115,26 @@ func (redisRepo *RedisRepository) FindSet(key string) (*[]string, error) {
 	return &val, nil
 }
 
+// intended to be used with wildcard
+func (redisRepo *RedisRepository) FindMany(key string) (*[]interface{}, error) {
+	c, cancel := generateContext()
+
+	defer func() {
+		cancel()
+	}()
+
+	result := redisRepo.Clinet.MGet(c, key)
+	if result.Err() != nil {
+		logger.Error(errors.New("could not read from set in redis. zrange"), zap.Error(result.Err()))
+		return nil, result.Err()
+	}
+	if result == nil {
+		return nil, nil
+	}
+	val := result.Val()
+	return &val, nil
+}
+
 func SetUpRedisRepo() {
 	RedisRepo = RedisRepository{Clinet: redisDB.Client}
 	logger.Info("redis repository initialisation complete")
