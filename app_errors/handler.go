@@ -10,5 +10,5 @@ import (
 func ErrorHandler(ctx *gin.Context, err RequestError, fields ...zapcore.Field) {
 	logger.Error(err, fields...)
 	ctx.Abort()
-	server_response.Respond(ctx, err.StatusCode, err.Error(), false, nil, nil)
+	server_response.Respond(ctx, err.StatusCode, "an error occured", false, nil, &[]string{err.Error()})
 }
