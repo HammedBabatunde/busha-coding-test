@@ -18,10 +18,7 @@ func main() {
 		CleanUp()
 	}()
 
-	err := godotenv.Load()
-	if err != nil {
-		panic("could not load env variables")
-	}
+	godotenv.Load()
 
 	StartServices()
 
