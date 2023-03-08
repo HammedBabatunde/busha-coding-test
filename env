@@ -1,5 +1,5 @@
-PORT=
-POSTGRESSQL_CONNECTION_STRING=
-POSTGRESSQL_DB_NAME=
-GIN_MODE=
-REDIS_URL=
+PORT= 8080
+POSTGRESSQL_CONNECTION_STRING= postgres://babatunde:olawale6708@gmail.com@emekarr-project.postgres.database.azure.com/postgres?sslmode=require
+POSTGRESSQL_DB_NAME= emekarr-db
+GIN_MODE= release
+REDIS_URL= emekar-project.redis.cache.windows.net
